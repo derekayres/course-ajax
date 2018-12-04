@@ -47,7 +47,7 @@
         const data = JSON.parse(this.responseText);
 
         if (data.response && data.response.docs && data.response.docs.length > 1) {
-            htmlContent = '<ul>' + data.response.docs.map(article >= `<li class="article">
+            htmlContent = '<ul>' + data.response.docs.map(article => `<li class="article">
                 <h2><a href="${article.web_url}">${article.headline.main}</a></h2>
                 <p>${article.snippet}</p>
               </li>`
@@ -56,11 +56,11 @@
             htmlContent = '<div class="error-no-articles">No articles available</div>';
         }
 
-        responseContainer.insertAdjunctHTML('beforeend', htmlContent);
-  }
+        responseContainer.insertAdjacentHTML('beforeend', htmlContent);
+    }
 
-  function requestError(e, part) {
+    function requestError(e, part) {
         console.log(e);
-        responseContainer.insertAdjunctHTML('beforeend', `<p class="network-warning error"`)
-  }
+        responseContainer.insertAdjunctHTML('beforeend', `<p class="network-warning error">Network Warning Error</p>`);
+    }
 })();
