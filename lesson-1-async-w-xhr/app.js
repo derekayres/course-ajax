@@ -8,16 +8,32 @@
         e.preventDefault();
         responseContainer.innerHTML = '';
         searchedForText = searchField.value;
-
+        // Fetch image request
         fetch(`https://api.unsplash.com/search/photos?page=1&query=${searchedForText}`, {
             headers: {
                 Authorization: 'Client-ID 42d1d0e4f974dac586482feb2ae477d9e652e9e240b4d7d7284813036b0fabc5'
             }
         }).then(response => response.json())
             .then(addImage)
-            .catch(err => requestError(err, 'image'));
+            .catch(e => requestError(e, 'image'));
 
-        /*  jQuery request
+        function addImage(data) {
+            let htmlContent = '';
+            const firstImage = data.results[0];
+
+            if (firstImage) {
+                htmlContent = `<figure>
+                    <img src="${firstImage.urls.small}" alt="${searchedForText}">
+                    <figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
+                </figure>`;
+            } else {
+                htmlContent = 'Unfortunately, no image was returned for your search.';
+            }
+
+            responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
+        }
+
+        /*  jQuery image request
         $.ajax({
             url: `https://api.unsplash.com/search/photos?page=1&query=${searchedForText}`,
             headers: {
@@ -25,7 +41,7 @@
             }
         }).done(addImage);*/
 
-        /* XML request
+        /* XML image request
         const unsplashRequest = new XMLHttpRequest();
         unsplashRequest.onload = addImage;
         unsplashRequest.onerror = function (err) {
@@ -37,7 +53,7 @@
         $.ajax({
             url: `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=1ffbde5ddd6d4579b308e1f91c814ba3`,
         }).done(addArticles);
-        /*
+        /* XML article request
         const articleRequest = new XMLHttpRequest();
         articleRequest.onload = addArticles;
         articleRequest.onerror = function (err) {
@@ -46,20 +62,22 @@
         articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=1ffbde5ddd6d4579b308e1f91c814ba3`);
         articleRequest.send();*/
     });
-    function addImage() {
+    /* Fetch image request upper scope
+    function addImage(data) {
         let htmlContent = '';
         const firstImage = data.results[0];
 
         if (firstImage) {
             htmlContent = `<figure>
-              <img src="${firstImage.urls.small}" alt="${searchedForText}">
-              <figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
-    </figure>`;
+            <img src="${firstImage.urls.small}" alt="${searchedForText}">
+            <figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
+        </figure>`;
         } else {
-            htmlContent = 'Unfortunately, no image was returned for your search.';
+            htmlContent = 'Unfortunately, no image was returned for your search.'
         }
+
         responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
-    }
+    }*/
     /* jQ add images
     function addImage(images) {
         const firstImage = images.results[0];
@@ -70,7 +88,7 @@
             </figure>`
         );
     }*
-    /*
+    /* XML add images
     function addImage() {
         let htmlContent = '';
         const data = JSON.parse(this.responseText);
@@ -104,7 +122,7 @@
 
         responseContainer.insertAdjacentHTML('beforeend', htmlContent);
     }
-    /*
+    /*  XML add articles
     function addArticles() {
         let htmlContent = '';
         const data = JSON.parse(this.responseText);
@@ -124,6 +142,6 @@
 
     function requestError(e, part) {
         console.log(e);
-        responseContainer.insertAdjunctHTML('beforeend', `<p class="network-warning error">Network Warning Error</p>`);
+        responseContainer.insertAdjacentHTML('beforeend', `<p class="network-warning error">Network Warning Error</p>`);
     }
 })();
