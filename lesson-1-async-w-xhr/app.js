@@ -21,7 +21,7 @@
             .then(response => response.json())
             .then(addArticles)
             .catch(e => requestError(e, 'articles'));
-        //Fetch addImage inner scope
+        /*Fetch addImage inner scope
         function addImage(data) {
             let htmlContent = '';
             const firstImage = data.results[0];
@@ -36,7 +36,7 @@
             }
 
             responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
-        }
+        }*/
 
         /*  jQuery image request
         $.ajax({
@@ -68,7 +68,7 @@
         articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=1ffbde5ddd6d4579b308e1f91c814ba3`);
         articleRequest.send();*/
     });
-    /* Fetch image request upper scope
+    // Fetch image request upper scope
     function addImage(data) {
         let htmlContent = '';
         const firstImage = data.results[0];
@@ -79,11 +79,11 @@
             <figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
         </figure>`;
         } else {
-            htmlContent = 'Unfortunately, no image was returned for your search.'
+            htmlContent = 'Unfortunately, no image was returned for your search.';
         }
 
         responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
-    }*/
+    }
     /* jQ add images
     function addImage(images) {
         const firstImage = images.results[0];
